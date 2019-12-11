@@ -196,6 +196,25 @@ public class DataBaseUtilities
 		}
 	}
 
+	public static bool CompactAccessDB(string srcConn, string tmpConn, string srcFName, string tmpFName)
+	{
+		if (!File.Exists(srcFName) || File.Exists(tmpFName))
+		{
+			return false;
+		}
+		try
+		{
+			new JetEngineClass().CompactDatabase(srcConn, tmpConn);
+			File.Copy(tmpFName, srcFName, overwrite: true);
+			File.Delete(tmpFName);
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+	
 	public static string dataTabletoHTMLTable(DataTable dt)
 	{
 		if (dt == null)
